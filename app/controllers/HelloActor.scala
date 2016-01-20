@@ -10,7 +10,13 @@ import scala.concurrent.ExecutionContext.Implicits.global
 class HelloActor @Inject() (actorSystem: ActorSystem) extends Actor {
   override def receive: Receive = {
     case Hello =>
-      println(s"Just received Hello message. Scheduling a new message...")
+      try {
+        println(s"Just received Hello message. Scheduling a new message...")
+        // other commands
+      }
+      catch {
+        case c: Exception => c.printStackTrace()
+      }
       actorSystem.scheduler.scheduleOnce(5.seconds, self, Hello)
     case _ => throw new IllegalStateException("Unknown message type")
   }
